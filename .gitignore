@@ -1,0 +1,171 @@
+# BarberEase .gitignore
+
+# Environment Variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Backend (Java/Maven)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.factorypath
+backend/*.iml
+backend/.idea/
+backend/*.log
+backend/logs/
+
+# Frontend (Node/React)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.cache/
+frontend/*.local
+frontend/.DS_Store
+frontend/coverage/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.eslintcache
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Build artifacts
+*.jar
+*.war
+*.class
+
+# Secrets
+secrets/
+*.pem
+*.key
+*.crt
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Test coverage
+coverage/
+*.coverage
+.nyc_output/
+
+# Database
+data/
+mongodb_data/
+*.db
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# JetBrains
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Package files
+*.tgz
+*.tar.gz
+*.zip
+
+# Dependency directories
+/node_modules
+/jspm_packages
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Production
+/dist
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+

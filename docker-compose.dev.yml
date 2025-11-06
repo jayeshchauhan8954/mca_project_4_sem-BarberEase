@@ -1,0 +1,50 @@
+version: '3.8'
+
+# Development-specific Docker Compose configuration
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  mongodb:
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    # Enable MongoDB shell access
+    command: --auth
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: build  # Use build stage for development
+    volumes:
+      # Mount source code for hot reload
+      - ./backend/src:/app/src:ro
+      - ./backend/target:/app/target
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+    # Override CMD for development
+    command: ["mvn", "spring-boot:run"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Mount source code for hot reload
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+      - /app/node_modules  # Prevent overwriting node_modules
+    environment:
+      VITE_API_URL: http://localhost:8080/api
+      NODE_ENV: development
+    # Override CMD for development
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  # Remove nginx in development (use Vite dev server)
+  nginx:
+    profiles:
+      - production  # Only start nginx in production
+

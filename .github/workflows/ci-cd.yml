@@ -1,0 +1,202 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Backend Tests and Build
+  backend:
+    name: Backend Build & Test
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password123
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      
+      - name: Build with Maven
+        working-directory: ./backend
+        run: mvn clean install -DskipTests
+      
+      - name: Run tests
+        working-directory: ./backend
+        run: mvn test
+        env:
+          MONGODB_URI: mongodb://admin:password123@localhost:27017/barber_ease_test?authSource=admin
+      
+      - name: Generate test coverage
+        working-directory: ./backend
+        run: mvn jacoco:report
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/target/site/jacoco/jacoco.xml
+          flags: backend
+      
+      - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./backend
+        run: docker build -t barberease-backend:latest .
+  
+  # Frontend Tests and Build
+  frontend:
+    name: Frontend Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: ./frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      - name: Lint code
+        working-directory: ./frontend
+        run: npm run lint
+      
+      - name: Run tests
+        working-directory: ./frontend
+        run: npm test -- --coverage --watchAll=false
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./frontend/coverage/lcov.info
+          flags: frontend
+      
+      - name: Build application
+        working-directory: ./frontend
+        run: npm run build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/dist
+      
+      - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./frontend
+        run: docker build -t barberease-frontend:latest .
+  
+  # Code Quality Checks
+  code-quality:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=barberease
+            -Dsonar.organization=your-org
+  
+  # Security Scan
+  security:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: Backend dependency check
+        working-directory: ./backend
+        run: |
+          mvn dependency-check:check
+      
+      - name: Frontend npm audit
+        working-directory: ./frontend
+        run: npm audit --audit-level=moderate
+  
+  # Deploy to Development
+  deploy-dev:
+    name: Deploy to Development
+    needs: [backend, frontend, code-quality]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Deploy to development server
+        run: |
+          echo "Deploying to development environment..."
+          # Add your deployment script here
+  
+  # Deploy to Production
+  deploy-prod:
+    name: Deploy to Production
+    needs: [backend, frontend, code-quality, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # Add your production deployment script here
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+

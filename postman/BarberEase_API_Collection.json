@@ -1,0 +1,525 @@
+{
+  "info": {
+    "name": "BarberEase API Collection",
+    "description": "Complete API collection for BarberEase Barber Shop Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\",\n  \"role\": \"CUSTOMER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', jsonData.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Shop Management",
+      "item": [
+        {
+          "name": "Create Shop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Cuts\",\n  \"address\": \"123 Main St, Mumbai\",\n  \"phone\": \"9876543210\",\n  \"email\": \"info@premiumcuts.com\",\n  \"description\": \"Professional barbershop\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Shops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shop By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Shop",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Shop Name\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Shop",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Public Shops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/public/shops",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "public", "shops"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Staff Management",
+      "item": [
+        {
+          "name": "Add Staff to Shop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rajesh Kumar\",\n  \"phone\": \"9876543211\",\n  \"email\": \"rajesh@example.com\",\n  \"specialization\": \"Hair Cutting\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId/staff",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId", "staff"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shop Staff",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId/staff",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId", "staff"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Staff Availability",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"availability\": {\n    \"monday\": [\n      {\n        \"startTime\": \"09:00\",\n        \"endTime\": \"12:00\",\n        \"available\": true\n      },\n      {\n        \"startTime\": \"14:00\",\n        \"endTime\": \"18:00\",\n        \"available\": true\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owner/staff/:staffId/availability",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "staff", ":staffId", "availability"],
+              "variable": [
+                {
+                  "key": "staffId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Haircut\",\n  \"description\": \"Professional hair cutting service\",\n  \"durationMinutes\": 30,\n  \"price\": 500,\n  \"category\": \"HAIRCUT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId", "services"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shop Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/shops/:shopId/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "shops", ":shopId", "services"],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shopId\": \"{{shopId}}\",\n  \"staffId\": \"{{staffId}}\",\n  \"serviceId\": \"{{serviceId}}\",\n  \"appointmentDateTime\": \"2024-01-20T14:00:00\",\n  \"notes\": \"Please use organic products\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Slots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shops/:shopId/available-slots?staffId=:staffId&serviceId=:serviceId&date=2024-01-20T00:00:00",
+              "host": ["{{baseUrl}}"],
+              "path": ["shops", ":shopId", "available-slots"],
+              "query": [
+                {
+                  "key": "staffId",
+                  "value": ":staffId"
+                },
+                {
+                  "key": "serviceId",
+                  "value": ":serviceId"
+                },
+                {
+                  "key": "date",
+                  "value": "2024-01-20T00:00:00"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "shopId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/:bookingId/cancel?reason=Personal emergency",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", ":bookingId", "cancel"],
+              "query": [
+                {
+                  "key": "reason",
+                  "value": "Personal emergency"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "bookingId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"amount\": 100\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/create-order",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "create-order"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"order_xxxxx\",\n  \"paymentId\": \"pay_xxxxx\",\n  \"signature\": \"signature_xxxxx\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "verify"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get My Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
+

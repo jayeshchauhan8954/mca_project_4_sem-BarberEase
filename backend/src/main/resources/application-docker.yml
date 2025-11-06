@@ -1,0 +1,69 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: barber-ease-backend
+  
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://admin:password123@mongodb:27017/barber_ease?authSource=admin}
+      auto-index-creation: true
+  
+  security:
+    jwt:
+      secret: ${JWT_SECRET:barberease-secret-key-2024-very-long-and-secure-key}
+      expiration: ${JWT_EXPIRATION:86400000}
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost}
+    allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+    allowed-headers: "*"
+    allow-credentials: true
+
+# Payment Gateway Configuration
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID}
+  key-secret: ${RAZORPAY_KEY_SECRET}
+
+# Twilio Configuration
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID}
+  auth-token: ${TWILIO_AUTH_TOKEN}
+  whatsapp-number: ${TWILIO_WHATSAPP_NUMBER}
+
+# Logging
+logging:
+  level:
+    com.barberease: INFO
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /app/logs/application.log
+    max-size: 10MB
+    max-history: 30
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
