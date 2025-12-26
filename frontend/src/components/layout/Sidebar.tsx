@@ -7,7 +7,6 @@ import {
   Store, 
   Users, 
   Calendar, 
-  Settings, 
   User,
   Scissors
 } from 'lucide-react'

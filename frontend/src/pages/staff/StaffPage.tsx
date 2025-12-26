@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../../store'
 import { fetchStaffByShop } from '../../store/slices/shopSlice'
-import { Users, Star, Clock, Phone, Mail } from 'lucide-react'
+import { Users, Star, Phone, Mail } from 'lucide-react'
 
 const StaffPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()

@@ -1,0 +1,39 @@
+================================================================================
+                    BARBEREASE - QUICK START GUIDE
+================================================================================
+
+STEP 1: INSTALL PREREQUISITES
+-------------------------------
+1. Java Runtime Environment (JRE) 17+
+   Download: https://adoptium.net/temurin/releases/
+   Verify: Open CMD, type "java -version"
+
+2. MongoDB 6.0+
+   Download: https://www.mongodb.com/try/download/community
+   Install MongoDB and start the service
+
+STEP 2: START MONGODB
+----------------------
+Windows:
+  - Open Services (Win+R, type "services.msc")
+  - Find "MongoDB" → Right-click → Start
+  OR
+  - Open CMD as Administrator
+  - Type: net start MongoDB
+
+STEP 3: RUN THE APPLICATION
+----------------------------
+Double-click: BarberEase.exe
+OR
+Open CMD in this folder and type: BarberEase.exe
+
+STEP 4: ACCESS THE APPLICATION
+-------------------------------
+Open browser and go to: http://localhost:8080
+
+================================================================================
+IMPORTANT: MongoDB MUST be running before starting the application!
+================================================================================
+
+For detailed instructions, see: RUNNING_INSTRUCTIONS.md
+

@@ -9,14 +9,12 @@ import {
   CheckCircle, 
   XCircle, 
   Plus,
-  User,
   Scissors
 } from 'lucide-react'
 
 const BookingsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { bookings, loading } = useSelector((state: RootState) => state.booking)
-  const { user } = useSelector((state: RootState) => state.auth)
 
   useEffect(() => {
     dispatch(fetchBookings())

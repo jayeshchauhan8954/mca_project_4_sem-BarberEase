@@ -1,8 +1,7 @@
-package com.barberease.service;
+                                                                                                                                                                                                                                                                                                                                                                                                package com.barberease.service;
 
 import com.barberease.dto.BookingRequest;
 import com.barberease.model.Booking;
-import com.barberease.model.Service;
 import com.barberease.repository.BookingRepository;
 import com.barberease.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

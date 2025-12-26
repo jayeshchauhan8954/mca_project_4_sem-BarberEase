@@ -5,12 +5,10 @@ import { fetchBookings } from '../store/slices/bookingSlice'
 import { fetchShops } from '../store/slices/shopSlice'
 import { 
   Calendar, 
-  Users, 
   Store, 
   TrendingUp,
   Clock,
-  CheckCircle,
-  XCircle
+  CheckCircle
 } from 'lucide-react'
 
 const DashboardPage: React.FC = () => {

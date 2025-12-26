@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from './store'
@@ -24,7 +24,7 @@ import ProfilePage from './pages/ProfilePage'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
-  const { isAuthenticated, loading, user } = useSelector((state: RootState) => state.auth)
+  const { isAuthenticated, loading } = useSelector((state: RootState) => state.auth)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {

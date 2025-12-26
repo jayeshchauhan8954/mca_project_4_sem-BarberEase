@@ -7,7 +7,6 @@ import { RootState, AppDispatch } from '../../store'
 import { createBooking, fetchAvailableSlots, clearAvailableSlots } from '../../store/slices/bookingSlice'
 import { fetchShops } from '../../store/slices/shopSlice'
 import { BookingRequest } from '../../types'
-import { Calendar, Clock, User, Scissors } from 'lucide-react'
 
 const BookingCreatePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -20,7 +19,7 @@ const BookingCreatePage: React.FC = () => {
   const [selectedService, setSelectedService] = useState<string>('')
   const [selectedDate, setSelectedDate] = useState<string>('')
   
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<BookingRequest>()
+  const { register, handleSubmit, formState: {}, setValue } = useForm<BookingRequest>()
 
   useEffect(() => {
     dispatch(fetchShops())

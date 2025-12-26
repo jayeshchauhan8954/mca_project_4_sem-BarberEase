@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { RootState } from '../store'
-import { User, Mail, Phone, MapPin, Calendar, Edit } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Edit } from 'lucide-react'
 
 const ProfilePage: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth)
@@ -17,7 +17,7 @@ const ProfilePage: React.FC = () => {
     }
   })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     try {
       // Update profile logic would go here
       toast.success('Profile updated successfully!')

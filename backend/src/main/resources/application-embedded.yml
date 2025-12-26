@@ -1,0 +1,64 @@
+server:
+  port: 8080
+  # No context-path for embedded mode - serve frontend from root
+
+spring:
+  application:
+    name: barber-ease-backend
+  
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/barber_ease
+      auto-index-creation: true
+  
+  security:
+    jwt:
+      secret: barberease-secret-key-2024-very-long-and-secure-key
+      expiration: 86400000 # 24 hours
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  
+  # Allow all origins for embedded application
+  cors:
+    allowed-origins: "*"
+    allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+    allowed-headers: "*"
+    allow-credentials: true
+
+# Payment Gateway Configuration
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID:rzp_test_your_key_id}
+  key-secret: ${RAZORPAY_KEY_SECRET:your_key_secret}
+
+# Twilio Configuration
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:your_account_sid}
+  auth-token: ${TWILIO_AUTH_TOKEN:your_auth_token}
+  whatsapp-number: ${TWILIO_WHATSAPP_NUMBER:+14155238886}
+
+# Logging
+logging:
+  level:
+    com.barberease: INFO
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+

@@ -6,13 +6,9 @@ import { RootState, AppDispatch } from '../../store'
 import { fetchBookingById, cancelBooking } from '../../store/slices/bookingSlice'
 import { 
   Calendar, 
-  Clock, 
   User, 
   Store, 
   Scissors, 
-  DollarSign, 
-  MapPin,
-  Phone,
   ArrowLeft,
   XCircle
 } from 'lucide-react'
@@ -20,7 +16,6 @@ import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import Modal from '../../components/common/Modal'
 import { formatDateTime, formatCurrency } from '../../utils/formatters'
-import { getStatusColor } from '../../utils/formatters'
 
 const BookingDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()

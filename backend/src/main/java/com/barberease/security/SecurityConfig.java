@@ -64,10 +64,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        // Allow static resources (CSS, JS, images, etc.) without authentication
+                        .requestMatchers("/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", 
+                                       "/**/*.gif", "/**/*.svg", "/**/*.ico", "/**/*.woff", "/**/*.woff2", 
+                                       "/**/*.ttf", "/**/*.eot", "/assets/**", "/index.html", "/").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/owner/**").hasAnyRole("ADMIN", "SHOP_OWNER")
                         .requestMatchers("/api/staff/**").hasAnyRole("ADMIN", "SHOP_OWNER", "STAFF")
-                        .anyRequest().authenticated()
+                        // Require authentication for API endpoints only
+                        .requestMatchers("/api/**").authenticated()
+                        // Allow all other requests (frontend routes) without authentication
+                        .anyRequest().permitAll()
                 );
         
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
